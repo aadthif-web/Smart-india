@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Community Issue Reporting Portal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0f1416;--surface:#182024;--ink:#e8eeee;--mute:#8fa1a5;--line:#2a373c;--sign:#2dd4bf;--signink:#04201c;--deep:#0a0e10;--deeptx:#e8eeee;--g:#4ade80;--l:#fbbf24;--p:#f87171;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Public Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Familjen Grotesk',system-ui,sans-serif;line-height:1.1;margin:0}
+a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+header{background:var(--deep);color:var(--deeptx);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.bar{max-width:1080px;margin:auto;padding:12px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{font:700 17px/1.2 'Familjen Grotesk';text-align:left;display:flex;align-items:center;gap:9px;cursor:pointer;background:none;border:0;color:inherit;padding:0}
+.logo i{width:26px;height:26px;background:var(--sign);border-radius:50%;display:grid;place-items:center;color:var(--signink);font-style:normal;font-size:15px}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav button{background:none;border:0;color:inherit;padding:8px 12px;border-radius:6px;cursor:pointer;opacity:.8}
+nav button.on,nav button:hover{opacity:1;background:rgba(255,255,255,.12)}
+main{max-width:1080px;margin:auto;padding:28px 20px 60px}
+.hero{background:radial-gradient(circle at 85% 0%,rgba(45,212,191,.16),transparent 55%),var(--deep);border:1px solid var(--line);color:var(--deeptx);border-radius:14px;padding:44px 32px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(34px,6vw,60px);max-width:14ch}
+.hero p{max-width:46ch;color:#c3cbd0;margin:14px 0 24px}
+.hero:after{content:"";position:absolute;right:0;bottom:34px;width:46%;height:6px;background:repeating-linear-gradient(90deg,var(--sign) 0 36px,transparent 36px 64px)}
+.btn{background:var(--sign);color:var(--signink);border:0;padding:12px 20px;border-radius:8px;font-weight:600;cursor:pointer}
+.btn.alt{background:transparent;color:inherit;border:1.5px solid currentColor;margin-left:8px}
+.btn.sm{padding:6px 12px;font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:26px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--sign);border-radius:10px;padding:20px;cursor:pointer;text-align:left}
+.tile .em{font-size:30px}.tile h3{font-size:22px;margin:8px 0}.tile p{margin:0;color:var(--mute);font-size:15px}
+.tile:hover{border-top-color:var(--ink)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin-top:14px;counter-reset:s}
+.flow div{padding:14px 14px 14px 0;border-top:3px solid var(--line);font-size:14px;counter-increment:s}
+.flow div:before{content:counter(s);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;margin-right:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}.hero{padding:32px 22px}}
+label{display:block;font-weight:600;font-size:14px;margin:14px 0 5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg label{margin:0;flex:1;min-width:120px}
+.seg input{position:absolute;opacity:0;width:0}
+.seg span{display:block;text-align:center;padding:10px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;font-weight:500}
+.seg input:checked+span{border-color:var(--sign);background:var(--sign);color:var(--signink)}
+.seg input:focus-visible+span{outline:3px solid var(--ink)}
+.note{background:rgba(45,212,191,.12);border-left:4px solid var(--sign);padding:10px 14px;border-radius:6px;margin:14px 0;font-size:14px}
+.ok{background:rgba(74,222,128,.12);border-left-color:var(--g)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12.5px;font-weight:600;background:var(--line)}
+.s-SUBMITTED{background:#2a373c;color:#cfdadc}.s-UNDER-REVIEW{background:#4a3b0a;color:#fcd34d}.s-ASSIGNED{background:#12365a;color:#93c5fd}.s-IN-PROGRESS{background:#4d2a0c;color:#fdba74}.s-RESOLVED{background:#0f3f2a;color:#86efac}.s-CLEANING-IN-PROGRESS{background:#4d2a0c;color:#fdba74}
+.pr-High{color:var(--p)}.pr-Medium{color:var(--l)}.pr-Low{color:var(--g)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}.stat b{font:700 32px 'Familjen Grotesk';display:block}.stat span{color:var(--mute);font-size:14px}
+.bars{display:flex;gap:4px;height:12px;border-radius:6px;overflow:hidden;margin:6px 0 18px;background:var(--line)}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14.5px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mute);font-weight:600;font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.filters select{width:auto}
+.tl{list-style:none;margin:16px 0 0;padding:0 0 0 18px;border-left:3px solid var(--line)}
+.tl li{margin-bottom:14px;position:relative}.tl li:before{content:"";position:absolute;left:-26px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--sign);border:2px solid var(--surface)}
+.tl small{color:var(--mute)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);max-width:460px;width:92%}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.h{margin:0 0 6px;font-size:30px}.sub{color:var(--mute);margin:0 0 18px}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(var(--n,5),1fr);margin:22px 0 8px;padding:0}.steps li{text-align:center;position:relative;font-size:13px;color:var(--mute)}.steps b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;margin:0 auto 8px;background:var(--line);color:var(--ink);position:relative;z-index:1}.steps li:not(:last-child):after{content:"";position:absolute;top:17px;left:50%;width:100%;height:3px;background:var(--line)}.steps li.done:not(:last-child):after{background:var(--sign)}.steps li.done b,.steps li.cur b{background:var(--sign);color:var(--signink)}.steps li.cur b{box-shadow:0 0 0 5px rgba(45,212,191,.25)}.steps li.cur span{color:var(--ink);font-weight:600}.steps small{display:block;font-size:11.5px;margin-top:2px}.upd{margin:22px 0 0;font-size:16px}@media(max-width:640px){.steps{grid-template-columns:1fr;gap:14px}.steps li{display:flex;gap:12px;text-align:left;align-items:center}.steps b{margin:0}.steps li:not(:last-child):after{display:none}}
+.auth{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;min-height:60vh}@media(max-width:760px){.auth{grid-template-columns:1fr}}.auth h1{font-size:clamp(34px,5vw,52px);max-width:14ch}.tabs{display:flex;gap:6px;margin-bottom:6px}.tabs button{flex:1;padding:10px;border:0;border-bottom:3px solid var(--line);background:none;cursor:pointer;font-weight:600;color:var(--mute)}.tabs button.on{border-color:var(--sign);color:var(--ink)}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:0 20px 30px}
+</style></head>
+<body>
+<header><div class="bar">
+<button class="logo" onclick="go('home')"><i>✓</i>Smart Community Issue Reporting Portal</button>
+<nav id="nav"></nav>
+<button class="btn sm alt" id="lang" onclick="toggleLang()" style="margin:0" aria-label="Switch language">தமிழ்</button>
+</div></header>
+<main id="app"></main>
+<footer>Smart Community Issue Reporting Portal · College project prototype · Data is saved only in this browser</footer>
+<dialog id="dlg"></dialog>
+
+<script>
+const $=s=>document.querySelector(s);
+const T={en:{home:"Home",report:"Report issue",track:"Track",mine:"My complaints",admin:"Admin",login:"Log in",logout:"Log out",
+hero:"Save Nature, Save the Future!",heroP:"One portal for garbage, streetlight and pothole complaints. Every report gets a Complaint ID you can follow until it is resolved.",
+Garbage:"Garbage",Streetlight:"Streetlight",Pothole:"Pothole"},
+ta:{home:"முகப்பு",report:"புகார் அளி",track:"நிலை அறி",mine:"என் புகார்கள்",admin:"நிர்வாகி",login:"உள்நுழை",logout:"வெளியேறு",
+hero:"புகார் செய்யுங்கள். கண்காணியுங்கள். தீர்வு பெறுங்கள்.",heroP:"குப்பை, தெருவிளக்கு, சாலைக் குழி புகார்களுக்கு ஒரே தளம். ஒவ்வொரு புகாருக்கும் ஒரு புகார் எண் வழங்கப்படும்.",
+Garbage:"குப்பை",Streetlight:"தெருவிளக்கு",Pothole:"சாலைக் குழி"}};
+let lang='en';const t=k=>T[lang][k]||k;
+const CATS={Garbage:{e:"🗑️",d:"Overflowing bins or uncollected waste",dep:"Sanitation Department"},Streetlight:{e:"💡",d:"Lights that don't work or damaged poles",dep:"Electrical Maintenance"},Pothole:{e:"🕳️",d:"Potholes and damaged road surfaces",dep:"Road Maintenance"}};
+const ST=["SUBMITTED","UNDER REVIEW","ASSIGNED","IN PROGRESS","RESOLVED"];
+const GST=["SUBMITTED","ASSIGNED","CLEANING IN PROGRESS","RESOLVED"];
+const flow=c=>c.cat==="Garbage"?GST:ST;
+const HINT={Garbage:"Add a photo and the location of the waste. It is assigned to the Sanitation Department, and you can track collection and cleanup: Submitted, Assigned, Cleaning in progress, Resolved.",Streetlight:"Add the pole number or location. It goes to Electrical Maintenance for inspection and repair.",Pothole:"Add a photo, location and severity. It goes to Road Maintenance for repair."};
+const cls=s=>"s-"+s.replace(/ /g,"-");
+let db={users:[],complaints:[],seq:1004},me=null,view='home',tracked=null;
+const now=()=>new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+function load(){try{const r=localStorage.getItem('cc_db');if(r)db=JSON.parse(r)}catch(e){}
+ if(!db.complaints.length){db.complaints=[
+ mk("CC-1001","Garbage","Bin near bus stand overflowing for 3 days","Bus Stand Road","Medium","CLEANING IN PROGRESS","demo"),
+ mk("CC-1002","Streetlight","Pole 14 light not working, street is dark at night","Gandhi Nagar 2nd Street","High","ASSIGNED","demo"),
+ mk("CC-1003","Pothole","Deep pothole near school gate","School Road","High","RESOLVED","demo")];
+ db.complaints[0].dept="Sanitation Department";db.complaints[1].dept="Electrical Maintenance";db.complaints[2].dept="Road Maintenance";}}
+function mk(id,c,d,l,p,s,u){return{id,cat:c,desc:d,loc:l,pri:p,status:s,user:u,dept:"",photo:"",log:[{s:"SUBMITTED",r:"Complaint received.",at:now(),by:"System"}]}}
+function save(){try{localStorage.setItem('cc_db',JSON.stringify(db));localStorage.setItem('cc_me',JSON.stringify(me))}catch(e){}}
+try{me=JSON.parse(localStorage.getItem('cc_me')||'null')}catch(e){}
+load();db.complaints.forEach(c=>{if(c.cat==='Garbage'){if(c.status==='IN PROGRESS')c.status='CLEANING IN PROGRESS';if(c.status==='UNDER REVIEW')c.status='SUBMITTED'}});
+
+function go(v){view=v;render();window.scrollTo(0,0)}
+function toggleLang(){lang=lang==='en'?'ta':'en';$('#lang').textContent=lang==='en'?'தமிழ்':'English';render()}
+function nav(){if(!me){$('#nav').innerHTML='';return}const items=[['home',t('home')],...Object.keys(CATS).map(k=>['m:'+k,CATS[k].e+' '+t(k)]),['track',t('track')]];
+ if(me&&me.role==='citizen')items.push(['mine',t('mine')]);if(me&&me.role==='admin')items.push(['admin',t('admin')]);
+ $('#nav').innerHTML=items.map(([k,l])=>`<button class="${view===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('')+
+ (me?`<button onclick="logout()">${t('logout')} (${me.name})</button>`:`<button onclick="loginDlg()">${t('login')}</button>`)}
+function render(){curImg=null;imgP=null;nav();if(!me){$('#app').innerHTML=authView();return}const f=view.startsWith('m:')?()=>mod(view.slice(2)):{home,report,track,mine,admin}[view];$('#app').innerHTML=f()}
+
+function home(){const n=db.complaints.length,r=db.complaints.filter(c=>c.status==='RESOLVED').length;
+return `<section class="hero"><h1>${t('hero')}</h1><p>${t('heroP')}</p>
+<button class="btn" onclick="go('report')">${t('report')}</button><button class="btn alt" onclick="go('track')">${t('track')}</button></section>
+<div class="tiles">${Object.entries(CATS).map(([k,c])=>`<button class="tile" onclick="go('m:${k}')"><span class="em">${c.e}</span><h3>${t(k)}</h3><p>${c.d}. Goes to ${c.dep}.</p></button>`).join('')}</div>
+<div class="card" style="margin-bottom:16px"><h2 style="font-size:22px">${CATS.Garbage.e} Garbage management</h2><ul style="margin:10px 0 0;padding-left:20px"><li>Upload a photo and the location of the waste</li><li>Assigned to the Sanitation Department</li><li>Track collection and cleanup until it is resolved</li></ul><ol class="steps" style="--n:4">${GST.map((s,i)=>`<li><b>${i+1}</b><span>${s}</span></li>`).join('')}</ol></div>
+<div class="card"><h2 style="font-size:22px">How a complaint moves</h2><div class="flow">
+<div>Pick the issue type</div><div>Add photo, details and location</div><div>Get a Complaint ID</div><div>Admin reviews and assigns a team</div><div>Team works and posts updates</div><div>Marked resolved with remarks</div></div>
+<p class="sub" style="margin:16px 0 0">${n} complaints filed so far in this portal, ${r} resolved.</p></div>`}
+
+function report(){return `<h2 class="h">${t('report')}</h2><p class="sub">Takes about a minute.</p>
+<form class="card" onsubmit="submitC(event)">
+<label>What is the problem?</label><div class="seg" id="cats">${Object.keys(CATS).map((k,i)=>`<label><input type="radio" name="cat" value="${k}" ${i?'':'checked'} onchange="dupe()"><span>${CATS[k].e} ${t(k)}</span></label>`).join('')}</div>
+<div class="note" id="hint">${HINT.Garbage}</div><label for="desc">Describe it in simple words</label><textarea id="desc" rows="3" required minlength="10" oninput="dupe()" placeholder="e.g. Streetlight on pole 14 has been off for a week"></textarea>
+<div class="grid2"><div><label for="loc">Street or area</label><input id="loc" required oninput="dupe()" placeholder="e.g. Gandhi Nagar 2nd Street"><button type="button" class="btn sm alt" style="margin:8px 0 0" onclick="gps()">Use my location</button></div>
+<div><label for="pri">Priority</label><select id="pri"><option>Low</option><option selected>Medium</option><option>High</option></select><small class="sub">High: danger to people or traffic.</small></div></div>
+<label for="ph">Photo</label><input type="file" id="ph" accept="image/png,image/jpeg,image/webp" onchange="pv(this)"><img id="pvimg" alt="" style="max-width:200px;margin-top:8px;border-radius:8px;display:none">
+<div id="dup"></div><button class="btn" style="margin-top:18px">Submit complaint</button></form>`}
+const EX={Garbage:['Type of waste',['Household waste','Overflowing bin','Roadside dumping','Other']],Streetlight:['Problem',['Not working','Flickering','Damaged pole']],Pothole:['Severity',['Small','Medium','Dangerous']]};
+function mod(k){const c=CATS[k],f=flow({cat:k}),all=db.complaints.filter(x=>x.cat===k),own=me.role==='admin'?all:all.filter(x=>x.user===me.email);
+return `<h2 class="h">${c.e} ${t(k)} module</h2><p class="sub">${c.d}. Handled by the ${c.dep}.</p>
+<div class="stats"><div class="stat"><b>${all.length}</b><span>Total reports</span></div><div class="stat"><b>${all.filter(x=>x.status!=='RESOLVED').length}</b><span>Open</span></div><div class="stat"><b>${all.filter(x=>x.status==='RESOLVED').length}</b><span>Resolved</span></div></div>
+<div class="note">${HINT[k]}</div>
+<ol class="steps" style="--n:${f.length}">${f.map((s,i)=>`<li><b>${i+1}</b><span>${s}</span></li>`).join('')}</ol>
+<div class="grid2" style="align-items:start">${modForm(k)}<div><h3 class="upd" style="margin-top:0">${me.role==='admin'?'All':'Your'} ${k.toLowerCase()} reports</h3>${own.length?own.slice(0,4).map(detail).join(''):'<div class="card" style="margin-top:16px">No reports yet. Use the form to file one.</div>'}</div></div>`}
+function modForm(k){const x=EX[k];return `<form class="card" onsubmit="submitC(event)"><h3 style="font-size:22px">Report a ${k.toLowerCase()} issue</h3><input type="radio" name="cat" value="${k}" checked hidden>
+<label for="ex">${x[0]}</label><select id="ex">${x[1].map(o=>`<option>${o}</option>`).join('')}</select>
+${k==='Streetlight'?'<label for="pole">Pole number</label><input id="pole" placeholder="e.g. 14">':''}
+<label for="desc">Describe it in simple words</label><textarea id="desc" rows="3" required minlength="10" oninput="dupe()"></textarea>
+<label for="loc">Street or area</label><input id="loc" required oninput="dupe()"><button type="button" class="btn sm alt" style="margin:8px 0 0" onclick="gps()">Use my location</button>
+<label for="pri">Priority</label><select id="pri"><option>Low</option><option selected>Medium</option><option>High</option></select>
+<label for="ph">Photo${k==='Garbage'?' (required)':''}</label><input type="file" id="ph" accept="image/png,image/jpeg,image/webp" onchange="pv(this)"><img id="pvimg" alt="" style="max-width:200px;margin-top:8px;border-radius:8px;display:none">
+<div id="dup"></div><button class="btn" style="margin-top:18px">Submit complaint</button></form>`}
+function pick(k){const r=document.querySelector(`input[name=cat][value=${k}]`);if(r){r.checked=true;dupe()}}
+function pv(i){const f=i.files[0];if(!f){curImg=null;imgP=null;$('#pvimg').style.display='none';dupe();return}if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>5e6){alert("Choose a PNG, JPG or WebP image under 5 MB.");i.value="";return}
+ const im=$('#pvimg');im.src=URL.createObjectURL(f);im.style.display='block';
+ curImg=null;imgP=imgInfo(f).then(r=>{curImg=r;dupe()})}
+function gps(){if(!navigator.geolocation)return alert("Location is not available. Type the area instead.");
+ navigator.geolocation.getCurrentPosition(p=>{$('#loc').value=`GPS ${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}`},()=>alert("Could not read your location. Type the area instead."))}
+let curImg=null,imgP=null;
+/* Duplicate image detection: a 64-bit difference hash (dHash) is built from a tiny greyscale copy of the photo.
+   Resized, recompressed or slightly edited copies of the same picture give nearly the same hash. */
+function imgInfo(file){return new Promise(res=>{const u=URL.createObjectURL(file),im=new Image();
+ im.onload=()=>{try{const mid=document.createElement('canvas');mid.width=mid.height=32;const mx=mid.getContext('2d');mx.imageSmoothingQuality='high';mx.drawImage(im,0,0,32,32);
+  const g=document.createElement('canvas');g.width=9;g.height=8;const gx=g.getContext('2d',{willReadFrequently:true});gx.imageSmoothingQuality='high';gx.drawImage(mid,0,0,9,8);
+  const d=gx.getImageData(0,0,9,8).data,gr=i=>d[i*4]*.299+d[i*4+1]*.587+d[i*4+2]*.114;let bits='';
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++)bits+=gr(r*9+c)>gr(r*9+c+1)?'1':'0';
+  let h='';for(let i=0;i<64;i+=4)h+=parseInt(bits.substr(i,4),2).toString(16);
+  const k=Math.min(1,72/Math.max(im.width,im.height)),t=document.createElement('canvas');t.width=Math.max(1,Math.round(im.width*k));t.height=Math.max(1,Math.round(im.height*k));
+  t.getContext('2d').drawImage(im,0,0,t.width,t.height);res({h,th:t.toDataURL('image/jpeg',.6)})}catch(e){res(null)}
+  URL.revokeObjectURL(u)};im.onerror=()=>{URL.revokeObjectURL(u);res(null)};im.src=u})}
+const ham=(a,b)=>{let n=0;for(let i=0;i<16;i++){let v=parseInt(a[i],16)^parseInt(b[i],16);while(v){n+=v&1;v>>=1}}return n};
+function findImgDup(h){if(!h)return[];return db.complaints.filter(x=>x.ih&&!x.dup).map(x=>({...x,d:ham(h,x.ih)})).filter(x=>x.d<=10).sort((a,b)=>a.d-b.d)}
+const tok=s=>new Set(String(s).toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>2));
+const jac=(a,b)=>{const A=tok(a),B=tok(b);if(!A.size||!B.size)return 0;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/(A.size+B.size-n)};
+function findDup(cat,loc,desc){loc=String(loc).trim();if(loc.length<4)return[];return db.complaints.filter(x=>x.cat===cat&&x.status!=='RESOLVED'&&!x.dup).map(x=>{const inc=x.loc.toLowerCase().includes(loc.toLowerCase());return{...x,score:Math.max(jac(loc,x.loc),inc?0.6:0)*0.7+jac(desc,x.desc)*0.3+(inc?0.1:0)}}).filter(x=>x.score>=0.4).sort((a,b)=>b.score-a.score)}
+function supportC(id){const c=db.complaints.find(x=>x.id===id);c.support=(c.support||0)+1;c.log.push({s:c.status,r:'Another citizen reported the same problem.',at:now(),by:me.name});save();
+ $('#app').innerHTML=`<div class="card"><h2 class="h">Added to the existing complaint</h2><div class="note ok">No new complaint was created. Your report was added to <b>${id}</b>. Track it with this ID.</div><button class="btn" onclick="tracked='${id}';go('track')">Track ${id}</button><button class="btn alt" onclick="go('home')">Back to home</button></div>`}
+function markDup(id){const c=db.complaints.find(x=>x.id===id),o=db.complaints.find(x=>x.id===c.dupOf),f=flow(c);c.dup=true;c.status=f[f.length-1];c.log.push({s:c.status,r:`Closed as duplicate of ${c.dupOf}. Follow that complaint for updates.`,at:now(),by:me.name});if(o)o.support=(o.support||0)+1;save();render()}
+function dupe(){if(!$('#dup'))return;const c=document.querySelector('input[name=cat]:checked').value,l=($('#loc')||{}).value||"";if($('#hint'))$('#hint').innerHTML=HINT[c];
+ const m=findDup(c,l,($('#desc')||{}).value||""),im=findImgDup(curImg&&curImg.h),
+ ih=im.length?`<div class="note" style="border-left-color:var(--l)"><b>This photo looks like one already uploaded.</b> Check if it is the same problem.${im.slice(0,3).map(x=>`<div style="margin-top:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">${x.thumb?`<img src="${x.thumb}" alt="Existing photo for ${x.id}" style="height:56px;border-radius:6px">`:''}<span><b>${x.id}</b> ${esc(x.desc.slice(0,50))} (${x.status.toLowerCase()}, ${Math.round((64-x.d)/64*100)}% photo match${x.d<=2?', almost identical':''})</span><button type="button" class="btn sm" onclick="supportC('${x.id}')">Same problem</button></div>`).join('')}<div style="margin-top:8px">Different problem? Submit as usual. An admin will see this match.</div></div>`:"";
+ $('#dup').innerHTML=ih+(m.length?`<div class="note"><b>Possible duplicate found.</b> Is your problem already reported?${m.slice(0,3).map(x=>`<div style="margin-top:8px"><b>${x.id}</b> ${esc(x.desc.slice(0,60))} (${x.status.toLowerCase()}, ${Math.round(x.score*100)}% match) <button type="button" class="btn sm" onclick="supportC('${x.id}')">Same problem</button></div>`).join('')}<div style="margin-top:8px">Different problem? Submit as usual.</div></div>`:"")}
+async function submitC(e){e.preventDefault();const c=document.querySelector('input[name=cat]:checked').value;
+ if(c==='Garbage'&&!$('#ph').files[0]){alert('Add a photo of the waste so the Sanitation Department can find it.');return}
+ if(imgP)await imgP;
+ const id="CC-"+(++db.seq);const x=mk(id,c,$('#desc').value.trim(),$('#loc').value.trim(),$('#pri').value,"SUBMITTED",me?me.email:"guest");
+ x.photo=$('#ph').files[0]?$('#ph').files[0].name:"";if($('#ex'))x.extra=$('#ex').value+($('#pole')&&$('#pole').value.trim()?', pole '+$('#pole').value.trim():'');const dd=findDup(c,x.loc,x.desc);if(dd.length)x.dupOf=dd[0].id;
+ if(curImg){const id2=findImgDup(curImg.h);x.ih=curImg.h;x.thumb=curImg.th;if(id2.length&&id2[0].d<=8&&(!x.dupOf||id2[0].id===x.dupOf)){x.dupOf=id2[0].id;x.imgDup=true}}db.complaints.unshift(x);save();
+ $('#app').innerHTML=`<div class="card"><h2 class="h">Complaint submitted</h2><div class="note ok">Your Complaint ID is <b style="font-size:22px">${id}</b>. Save it to track progress.</div>
+ <ol class="steps" style="--n:${flow(x).length}">${flow(x).map((s,i)=>`<li class="${i===0?'cur':''}"><b>${i+1}</b><span>${s}</span></li>`).join('')}</ol>
+ <p class="sub">Next stage: <b>${flow(x)[1]}</b>. An admin will review your report and assign it to ${CATS[c].dep}.</p>
+ <button class="btn" onclick="tracked='${id}';go('track')">Track this complaint</button><button class="btn alt" onclick="go('home')">Back to home</button></div>`}
+
+function detail(c){return `<div class="card" style="margin-top:16px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3 style="font-size:24px">${c.id} · ${CATS[c.cat].e} ${c.cat}</h3><span class="pill ${cls(c.status)}">${c.status}</span></div>
+<p>${esc(c.desc)}</p><p class="sub">${c.extra?esc(c.extra)+' - ':''}${esc(c.loc)} · Priority <b class="pr-${c.pri}">${c.pri}</b>${c.support?` (${c.support} more citizens reported this)`:''}${c.dept?` · ${c.dept}`:""}${c.photo?` · Photo: ${esc(c.photo)}`:""}</p>${c.thumb?`<img src="${c.thumb}" alt="Photo for ${c.id}" style="height:72px;border-radius:8px;margin-bottom:6px">`:''}
+<ol class="steps" aria-label="Progress" style="--n:${flow(c).length}">${flow(c).map((s,i)=>{const k=flow(c).indexOf(c.status),l=c.log.filter(x=>x.s===s).pop();return `<li class="${i<k?'done':i===k?'cur':''}"><b>${i<k?'✓':i+1}</b><span>${s}</span><small>${l?l.at:(i<k?'Completed':'Pending')}</small></li>`}).join('')}</ol>
+<h3 class="upd">Updates</h3><ul class="tl">${c.log.slice().reverse().map(l=>`<li><b>${l.s}</b> — ${esc(l.r)}<br><small>${l.by} · ${l.at}</small></li>`).join('')}</ul></div>`}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function track(){const c=tracked&&db.complaints.find(x=>x.id===tracked);
+ return `<h2 class="h">${t('track')}</h2><p class="sub">Enter your Complaint ID. Try CC-1001.</p>
+ <form class="card" onsubmit="event.preventDefault();tracked=$('#tid').value.trim().toUpperCase();render()" style="display:flex;gap:10px;flex-wrap:wrap"><input id="tid" style="flex:1;min-width:180px" placeholder="CC-1001" value="${tracked||''}" aria-label="Complaint ID"><button class="btn">Check status</button></form>
+ ${tracked?(c?detail(c):`<div class="note" style="margin-top:16px">No complaint found with ID ${esc(tracked)}. Check the ID and try again.</div>`):""}`}
+function mine(){const l=db.complaints.filter(c=>c.user===me.email);
+ return `<h2 class="h">${t('mine')}</h2><p class="sub">${l.length?'Select a row to see its updates.':''}</p>${l.length?l.map(detail).join(''):`<div class="card">You have not filed any complaints yet. <button class="btn sm" onclick="go('report')">Report an issue</button></div>`}`}
+
+let F={cat:"",status:"",pri:""};
+function admin(){const L=db.complaints,cnt=s=>L.filter(c=>c.status===s).length;
+ const pend=cnt("SUBMITTED")+cnt("UNDER REVIEW")+cnt("ASSIGNED"),prog=cnt("IN PROGRESS")+cnt("CLEANING IN PROGRESS"),res=cnt("RESOLVED");
+ const list=L.filter(c=>(!F.cat||c.cat===F.cat)&&(!F.status||c.status===F.status)&&(!F.pri||c.pri===F.pri));
+ const w=n=>L.length?n/L.length*100:0;
+ const sel=(k,o,ph)=>`<select aria-label="${ph}" onchange="F.${k}=this.value;render()"><option value="">${ph}</option>${o.map(x=>`<option ${F[k]===x?'selected':''}>${x}</option>`).join('')}</select>`;
+ return `<h2 class="h">Admin dashboard</h2><p class="sub">All reports in one place, grouped by department.</p>
+ <div class="stats">${Object.entries(CATS).map(([k,c])=>`<div class="stat"><span>${c.e} ${c.dep}</span><b>${L.filter(x=>x.cat===k&&x.status!=='RESOLVED').length}</b><span>open ${k.toLowerCase()} reports</span></div>`).join('')}</div>
+ <div class="stats"><div class="stat"><b>${L.length}</b><span>Total</span></div><div class="stat"><b>${pend}</b><span>Pending</span></div><div class="stat"><b>${prog}</b><span>In progress</span></div><div class="stat"><b>${res}</b><span>Resolved</span></div></div>
+ <div class="bars" role="img" aria-label="Pending ${pend}, in progress ${prog}, resolved ${res}"><i style="width:${w(pend)}%;background:var(--l)"></i><i style="width:${w(prog)}%;background:#4a86c5"></i><i style="width:${w(res)}%;background:var(--g)"></i></div>
+ <div class="filters">${sel('cat',Object.keys(CATS),'All categories')}${sel('status',[...ST,'CLEANING IN PROGRESS'],'All statuses')}${sel('pri',['High','Medium','Low'],'All priorities')}</div>
+ <div class="card wrap" style="padding:8px 16px"><table><thead><tr><th>ID</th><th>Issue</th><th>Area</th><th>Priority</th><th>Status</th><th>Team</th><th></th></tr></thead><tbody>
+ ${list.map(c=>`<tr><td><b>${c.id}</b></td><td>${CATS[c.cat].e} ${esc(c.desc.slice(0,50))}${c.dupOf?`<br><span class="pill" style="background:#4a3b0a;color:#fcd34d">${c.dup?'Duplicate of':'Possible duplicate of'} ${c.dupOf}${c.imgDup?' (same photo)':''}</span>`:''}${c.support?`<br><small>${c.support} more citizens reported this</small>`:''}</td><td>${esc(c.loc)}</td><td class="pr-${c.pri}"><b>${c.pri}</b></td><td><span class="pill ${cls(c.status)}">${c.status}</span></td><td>${c.dept||"—"}</td><td style="white-space:nowrap">${c.dupOf&&c.status!=='RESOLVED'?`<button class="btn sm alt" style="color:var(--ink);margin:0 4px 0 0" onclick="markDup('${c.id}')">Close as duplicate</button>`:''}${c.status!=='RESOLVED'?`<button class="btn sm" onclick="next('${c.id}')">Move to ${flow(c)[flow(c).indexOf(c.status)+1].toLowerCase()}</button> `:''}<button class="btn sm alt" style="color:var(--ink);margin:0 0 0 4px" onclick="manage('${c.id}')">Update</button></td></tr>`).join('')||'<tr><td colspan="7">No complaints match these filters.</td></tr>'}</tbody></table></div>`}
+function manage(id){const c=db.complaints.find(x=>x.id===id),d=$('#dlg');
+ d.innerHTML=`<form method="dialog" onsubmit="event.preventDefault();upd('${id}')"><h3 style="font-size:22px">${id} · ${c.cat}</h3>
+ <label for="ns">Status</label><select id="ns">${flow(c).map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('')}</select>
+ <label for="nd">Assign to</label><select id="nd">${["Sanitation Department","Electrical Maintenance","Road Maintenance"].map(s=>`<option ${s===(c.dept||CATS[c.cat].dep)?'selected':''}>${s}</option>`).join('')}</select>
+ <label for="nr">Progress note</label><textarea id="nr" rows="3" required></textarea>
+ <div style="margin-top:16px"><button class="btn">Save update</button><button type="button" class="btn alt" style="color:var(--ink)" onclick="$('#dlg').close()">Cancel</button></div></form>`;d.showModal()}
+function next(id){const c=db.complaints.find(x=>x.id===id),f=flow(c),i=f.indexOf(c.status);if(i<0||i>=f.length-1)return;
+ c.status=f[i+1];if(!c.dept)c.dept=CATS[c.cat].dep;
+ c.log.push({s:c.status,r:`Moved to ${c.status.toLowerCase()} (${c.dept}).`,at:now(),by:me.name});save();render()}
+function upd(id){const c=db.complaints.find(x=>x.id===id);c.status=$('#ns').value;c.dept=$('#nd').value;
+ c.log.push({s:c.status,r:$('#nr').value.trim()+` (${c.dept})`,at:now(),by:me.name});save();$('#dlg').close();render()}
+
+let am='login',aerr='';
+async function hash(p,e){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(e+':'+p));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function authView(){const r=am==='register'||am==='adminreg',ad=am==='admin'||am==='adminreg';
+return `<div class="auth"><div><h1>${t('hero')}</h1><p class="sub" style="max-width:44ch;margin-top:14px">${t('heroP')}</p>
+<p class="sub">${Object.values(CATS).map(c=>c.e).join(' ')} Garbage, streetlight and pothole reports in one place.</p></div>
+<form class="card" onsubmit="auth(event)"><div class="tabs"><button type="button" class="${am==='login'?'on':''}" onclick="am='login';aerr='';render()">Log in</button><button type="button" class="${am==='register'?'on':''}" onclick="am='register';aerr='';render()">Register</button><button type="button" class="${ad?'on':''}" onclick="am='admin';aerr='';render()">Admin</button></div>
+${r?'<label for="an">Full name</label><input id="an" required autocomplete="name">':''}
+<label for="ae">Email</label><input id="ae" type="email" required autocomplete="email" value="${am==='admin'?'admin@civic.in':''}">
+<label for="ap">Password</label><input id="ap" type="password" required minlength="6" autocomplete="${r?'new-password':'current-password'}">${am==='adminreg'?'<label for="ac">Admin access code</label><input id="ac" required autocomplete="off">':''}
+${aerr?`<div class="note" style="border-left-color:var(--p)">${aerr}</div>`:''}
+<button class="btn" style="margin-top:18px;width:100%">${am==='adminreg'?'Create admin account':r?'Create account':am==='admin'?'Open admin dashboard':'Log in'}</button>
+<p class="sub" style="font-size:13px;margin:14px 0 0">${am==='adminreg'?'Admin accounts need the department access code. Demo code: CIVIC-ADMIN-2026.':am==='admin'?'Demo admin password: admin123.':'New accounts are citizens. Admins use the Admin tab.'}</p>${ad?`<button type="button" class="btn sm alt" style="color:var(--ink);margin:10px 0 0" onclick="am='${am==='admin'?'adminreg':'admin'}';aerr='';render()">${am==='admin'?'New admin? Register here':'Already an admin? Log in'}</button>`:''}</form></div>`}
+async function auth(e){e.preventDefault();const em=$('#ae').value.trim().toLowerCase(),pw=$('#ap').value;let h;
+ try{h=await hash(pw,em)}catch(x){aerr='Secure login needs https. Open the published link.';return render()}
+ const u=db.users.find(x=>x.email===em);
+ if(am==='register'||am==='adminreg'){if(u){aerr='An account with this email already exists. Log in instead.';return render()}
+  const role=am==='adminreg'?'admin':'citizen';if(role==='admin'&&$('#ac').value.trim()!=='CIVIC-ADMIN-2026'){aerr='Incorrect admin access code.';return render()}
+  const n={name:$('#an').value.trim(),email:em,role,h};db.users.push(n);me={name:n.name,email:em,role}}
+ else{if(!u||u.h!==h){aerr='Email or password is incorrect.';return render()}
+  if(am==='admin'&&u.role!=='admin'){aerr='This account is not an admin account.';return render()}me={name:u.name,email:em,role:u.role}}
+ aerr='';save();go(me.role==='admin'?'admin':'home')}
+function logout(){me=null;save();go('home')}
+(async()=>{try{if(!db.users.find(u=>u.email==='admin@civic.in'))db.users.push({name:'Admin',email:'admin@civic.in',role:'admin',h:await hash('admin123','admin@civic.in')});save()}catch(e){}
+ if(me&&!db.users.find(u=>u.email===me.email))me=null;view=me&&me.role==='admin'?'admin':'home';render()})();
+</script></body></html>
